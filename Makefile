@@ -41,3 +41,6 @@ $(BINDIR):
 # Clean up object files and the executable
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
+
+run:
+	./bin/compiler
