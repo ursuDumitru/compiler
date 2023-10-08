@@ -1,14 +1,33 @@
 #pragma once
 
-enum{ // aici tot mai trebuie adaugat
-	ID
+enum{
+	ID,
 	// keywords
-	,TYPE_INT
+	TYPE_INT,
 	// delimiters
-	,COMMA,FINISH,COLON,SEMICOLON
+	COMMA, FINISH, COLON, SEMICOLON,
 	// operators
-	,ASSIGN,EQUAL
+	ASSIGN, EQUAL,
+	// commments
+	COMMENT,
+	// parantheses
+	LPAR, RPAR,
+	// operators
+	LESS,
+	// constants
+	INT
 	};
+
+const char *enum_names[] = {
+    "ID",
+    "TYPE_INT",
+    "COMMA", "FINISH", "COLON", "SEMICOLON",
+    "ASSIGN", "EQUAL",
+	"COMMENT",
+	"LPAR", "RPAR",
+	"LESS",
+	"INT"
+};
 
 #define MAX_STR		127
 

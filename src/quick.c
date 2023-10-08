@@ -14,9 +14,9 @@ int main()
     printf("\nChoose the file you want to compile(1 or 2) : ");
     scanf("%d", &option);
     if(option==1)
-        inbuf=loadFile("/home/ursu/Univer/Year3/LFTC/compilator/test/1.q");
+        inbuf=loadFile("/home/ursu/Univer/Year3/LFTC/compiler/test/1.q");
     else if(option==2)
-        inbuf=loadFile("/home/ursu/Univer/Year3/LFTC/compilator/test/2.q");
+        inbuf=loadFile("/home/ursu/Univer/Year3/LFTC/compiler/test/2.q");
     else
         err("Invalid option !");
 
