@@ -6,7 +6,7 @@ BINDIR := bin
 
 # Define the compiler and compiler flags
 CC := gcc
-CFLAGS := -Wall -I$(INCDIR)
+CFLAGS := -Wall -g -I$(INCDIR)
 
 # Define the target executable
 TARGET := $(BINDIR)/compiler
@@ -41,6 +41,9 @@ $(BINDIR):
 # Clean up object files and the executable
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
+
+run-debug:
+	gdb ./bin/compiler
 
 run:
 	./bin/compiler

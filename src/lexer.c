@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "../includes/lexer.h"
 #include "../includes/utils.h"
@@ -8,7 +9,7 @@
 Token tokens[MAX_TOKENS];
 int nTokens;
 
-int line=1;		// the current line in the input file
+int line = 1;		// the current line in the input file
 
 // adds a token to the end of the tokens list and returns it
 // sets its code and line
@@ -25,41 +26,23 @@ Token *addTk(int code)
 	return tk;
 }
 
-// copy in the dst buffer the string between [begin,end)
-char *copyn(char *dst,const char *begin,const char *end)
-{
-	char *p = dst;
-	if(end-begin > MAX_STR)
-		err("string too long");
-
-	while(begin != end)
-		*p++ = *begin++;
-
-	*p='\0';
-
-	return dst;
-}
-
-/*
-
-pch - (pointer at current char) este folosit ca iterator în textul de intrare.
-
-*/
 void tokenize(const char *pch)
 {
-	const char *start;
 	Token *tk;
 	char buf[MAX_STR+1];
+	char *text;
 
 	for(;;)
 	{
+		// text[0] = '\0';
 		switch(*pch)
 		{
+			// end of file
 			case EOF:
 			case '\0':
 				addTk(FINISH);
 				return;
-
+			// delimiters
 			case ',':
 				addTk(COMMA);
 				pch++;
@@ -75,6 +58,7 @@ void tokenize(const char *pch)
 				pch++;
 				break;
 
+			// operators
 			case '=':
 				if(pch[1] == '=')
 				{
@@ -88,12 +72,23 @@ void tokenize(const char *pch)
 				}
 				break;
 
-			case '#':
-				while (*pch != '\n' && *pch != '\r' && *pch != '\0')
-					pch++;
-
+			case '<':
+				addTk(LESS);
+				pch++;
 				break;
 
+			case '+':
+				addTk(ADD);
+				pch++;
+				break;
+
+			// comments
+			case '#':
+				while (is_comment(pch))
+					pch++;
+				break;
+
+			// parantheses
 			case '(':
 				addTk(LPAR);
 				pch++;
@@ -104,42 +99,31 @@ void tokenize(const char *pch)
 				pch++;
 				break;
 
-			case '<':
-				addTk(LESS);
-				pch++;
+			// string literals
+			case '"':
+				text = parse_string_literal(pch, buf);
+				tk = addTk(STR);
+				strcpy(tk->text, text);
 				break;
 
+			// constants
 			case '0' ... '9':
-				// integer
-				const char *begin = pch;
-				while (isdigit(*pch)) {
-					pch++;
-				}
-				const char *end = pch;
-
-				if (end - begin > MAX_STR) {
-					err("number too long");
-				}
-
-				buf[0] = '\0';
-				char *text = copyn(buf, begin, end);
+				text = parse_number(pch, buf);
 				tk = addTk(INT);
 				strcpy(tk->text, text);
 				break;
 
 			default:
+			// spaces and new lines
 				if(isspace(*pch)) // handles diff. types of spaces(\n, \t, \r,)
 				{
 					pch++;
 					break;
 				}
+			// identifiers
 				else if(isalpha(*pch) || *pch == '_')
 				{
-					// verify if it is a keyword or an identifier
-					for(start = pch++; isalnum(*pch) || *pch == '_'; pch++){}
-
-					buf[0] = '\0';
-					char *text = copyn(buf, start, pch);
+					text = parse_identifier(pch, buf);
 					if(strncmp(text,"int", 3) == 0)
 						addTk(TYPE_INT);
 					else

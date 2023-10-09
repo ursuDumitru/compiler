@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+
 enum{
 	ID,
 	// keywords
@@ -7,27 +9,18 @@ enum{
 	// delimiters
 	COMMA, FINISH, COLON, SEMICOLON,
 	// operators
-	ASSIGN, EQUAL,
+	ASSIGN, EQUAL, LESS, ADD,
 	// commments
 	COMMENT,
 	// parantheses
 	LPAR, RPAR,
-	// operators
-	LESS,
 	// constants
-	INT
+	INT,
+	// String literals
+	STR
 	};
 
-const char *enum_names[] = {
-    "ID",
-    "TYPE_INT",
-    "COMMA", "FINISH", "COLON", "SEMICOLON",
-    "ASSIGN", "EQUAL",
-	"COMMENT",
-	"LPAR", "RPAR",
-	"LESS",
-	"INT"
-};
+extern const char *enum_names[];
 
 #define MAX_STR		127
 
@@ -47,3 +40,10 @@ extern int nTokens;
 
 void tokenize(const char *pch);
 void showTokens();
+
+// helper functions
+char *copyn(char *dst,const char *begin,const char *end);
+char *parse_string_literal(const char *pch, char *buf);
+char *parse_number(const char *pch, char *buf);
+char *parse_identifier(const char *pch, char *buf);
+bool is_comment(const char *pch);
