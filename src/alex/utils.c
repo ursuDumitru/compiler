@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#include "../includes/utils.h"
+#include "../../includes/alex/utils.h"
 
 void err(const char *fmt,...){
 	fprintf(stderr,"ERR: ");

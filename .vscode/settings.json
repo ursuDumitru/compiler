@@ -1,5 +1,13 @@
 {
     "files.associations": {
-        "lexer.h": "c"
+        "lexer.h": "c",
+        "stdlib.h": "c",
+        "utils.h": "c",
+        "ad.h": "c",
+        "system_error": "c",
+        "parser.h": "c",
+        "compare": "c",
+        "at.h": "c",
+        "gen.h": "c"
     }
 }

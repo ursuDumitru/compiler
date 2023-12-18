@@ -9,9 +9,11 @@ function max(x:int, y:int):int
     end
 
 var i:int;
+var j:real;
+var k:str;
 i=0;    # iterator
 while(i<10)
-    puti(max(i,5));
+    puti(max(i,5, 2.0));
     i=i+1;
     end
 
